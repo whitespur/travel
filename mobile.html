@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>喀什三日游 - 移动版</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 1.8em;
+            color: #1e63b5;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .intro {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .note {
+            background-color: #fff4e5;
+            padding: 10px 15px;
+            border-left: 4px solid #ffa726;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            font-size: 0.9em;
+        }
+        .timeline {
+            margin: 30px 0;
+        }
+        .day {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .day-header {
+            background-color: var(--day-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .spot {
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid var(--day-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .spot-number {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--day-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .time {
+            color: #1e63b5;
+            font-weight: bold;
+        }
+        .distance {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .amap-link {
+            display: block;
+            background-color: #1e63b5;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 30px auto;
+            text-align: center;
+            max-width: 300px;
+        }
+        .amap-link:hover {
+            background-color: #154a8c;
+        }
+        #qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 1px solid #eee;
+            padding: 10px;
+            background-color: white;
+        }
+        #qrcode img {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .qr-label {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .day-1 {
+            --day-color: #ff4444;
+        }
+        .day-2 {
+            --day-color: #44aa44;
+        }
+        .day-3 {
+            --day-color: #4444ff;
+        }
+        .map-container {
+            margin: 20px 0;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        .map-legend {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+        .color-block {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+        .day-overview {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .overview-item {
+            text-align: center;
+            padding: 10px;
+            background-color: var(--day-color);
+            color: white;
+            border-radius: 5px;
+            opacity: 0.9;
+        }
+        .overview-item .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .overview-item .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+    <!-- 引入高德地图和二维码库 -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key=e5a73a6a1187af93c9f8a14a2035c205"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>喀什三日自驾游</h1>
+        <p class="intro">探索新疆的神秘与美丽 · 5月21日至5月23日</p>
+        
+        <div class="note">
+            <strong>注意：</strong>喀什地区与北京有3小时时差，当地时间比北京时间晚3小时。以下时间均为当地时间。
+        </div>
+
+        <!-- 添加地图容器 -->
+        <div class="map-container">
+            <div class="map-legend">
+                <div class="legend-item">
+                    <div class="color-block" style="background-color: #ff4444;"></div>
+                    <span>第一天</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-block" style="background-color: #44aa44;"></div>
+                    <span>第二天</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-block" style="background-color: #4444ff;"></div>
+                    <span>第三天</span>
+                </div>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <div class="timeline">
+            <div class="day day-1">
+                <div class="day-header">第一天（5月21日）- 喀什到塔什库尔干</div>
+                <div class="day-overview">
+                    <strong>今日行程概览</strong>
+                    <div class="overview-grid">
+                        <div class="overview-item">
+                            <div class="value">290公里</div>
+                            <div class="label">总行驶距离</div>
+                        </div>
+                        <div class="overview-item">
+                            <div class="value">6小时</div>
+                            <div class="label">预计行驶时间</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spot">
+                    <div class="time">09:00</div>
+                    <div>喀什市区出发</div>
+                    <div class="spot-number">1</div>
+                </div>
+                <div class="spot">
+                    <div class="time">11:00</div>
+                    <div>抵达白沙湖</div>
+                    <div class="distance">游览时间：约1.5小时</div>
+                    <div class="spot-number">2</div>
+                </div>
+                <div class="spot">
+                    <div class="time">13:00</div>
+                    <div>木吉乡火山群</div>
+                    <div class="distance">游览时间：约1小时</div>
+                    <div class="spot-number">3</div>
+                </div>
+                <div class="spot">
+                    <div class="time">15:30</div>
+                    <div>树洞公路</div>
+                    <div class="distance">游览时间：约1.5小时</div>
+                    <div class="spot-number">4</div>
+                </div>
+                <div class="spot">
+                    <div class="time">18:00</div>
+                    <div>抵达塔什库尔干县</div>
+                    <div class="distance">总行驶距离：约290公里</div>
+                    <div class="spot-number">5</div>
+                </div>
+            </div>
+
+            <div class="day day-2">
+                <div class="day-header">第二天（5月22日）- 塔什库尔干一日游</div>
+                <div class="day-overview">
+                    <strong>今日行程概览</strong>
+                    <div class="overview-grid">
+                        <div class="overview-item">
+                            <div class="value">190公里</div>
+                            <div class="label">总行驶距离</div>
+                        </div>
+                        <div class="overview-item">
+                            <div class="value">4小时</div>
+                            <div class="label">预计行驶时间</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spot">
+                    <div class="time">09:30</div>
+                    <div>参观石头城</div>
+                    <div class="distance">游览时间：约2小时</div>
+                    <div class="spot-number">1</div>
+                </div>
+                <div class="spot">
+                    <div class="time">13:00</div>
+                    <div>卡拉库里湖</div>
+                    <div class="distance">游览时间：约3小时</div>
+                    <div class="spot-number">2</div>
+                </div>
+                <div class="spot">
+                    <div class="time">16:00</div>
+                    <div>慕士塔格冰河公园</div>
+                    <div class="distance">游览时间：约2小时</div>
+                    <div class="spot-number">3</div>
+                </div>
+                <div class="spot">
+                    <div class="time">19:00</div>
+                    <div>返回塔什库尔干县</div>
+                    <div class="distance">当日行驶距离：约190公里</div>
+                    <div class="spot-number">4</div>
+                </div>
+            </div>
+
+            <div class="day day-3">
+                <div class="day-header">第三天（5月23日）- 塔什库尔干返回喀什</div>
+                <div class="day-overview">
+                    <strong>今日行程概览</strong>
+                    <div class="overview-grid">
+                        <div class="overview-item">
+                            <div class="value">290公里</div>
+                            <div class="label">总行驶距离</div>
+                        </div>
+                        <div class="overview-item">
+                            <div class="value">5小时</div>
+                            <div class="label">预计行驶时间</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spot">
+                    <div class="time">09:30</div>
+                    <div>前往瓦罕走廊</div>
+                    <div class="distance">游览时间：约2小时</div>
+                    <div class="spot-number">1</div>
+                </div>
+                <div class="spot">
+                    <div class="time">11:30</div>
+                    <div>红其拉甫国门</div>
+                    <div class="distance">游览时间：约1.5小时</div>
+                    <div class="spot-number">2</div>
+                </div>
+                <div class="spot">
+                    <div class="time">14:30</div>
+                    <div>塔合曼湿地</div>
+                    <div class="distance">游览时间：约1.5小时</div>
+                    <div class="spot-number">3</div>
+                </div>
+                <div class="spot">
+                    <div class="time">18:00</div>
+                    <div>返回喀什市区</div>
+                    <div class="distance">总行驶距离：约290公里</div>
+                    <div class="spot-number">4</div>
+                </div>
+            </div>
+        </div>
+
+        <a href="amapuri://workInAmap/createWithToken?polymericId=mcp_e4e8c5093eff4288a90760a97ab3b5ad&from=MCP" class="amap-link">在高德地图中打开行程</a>
+
+        <div id="qrcode"></div>
+        <p class="qr-label">扫描二维码在手机上查看行程</p>
+    </div>
+
+    <script>
+        // 定义三天行程的各个景点坐标
+        const pointsList = [
+            // 第一天景点
+            {
+                title: "第一天行程",
+                color: "#ff4444",
+                points: [
+                    { name: "1. 喀什市区", lng: 75.989746, lat: 39.470492 },
+                    { name: "2. 白沙湖", lng: 75.700000, lat: 39.200000 },
+                    { name: "3. 木吉乡火山群", lng: 75.400000, lat: 39.100000 },
+                    { name: "4. 树洞公路", lng: 75.250000, lat: 38.900000 },
+                    { name: "5. 塔什库尔干县", lng: 75.232988, lat: 37.777029 }
+                ]
+            },
+            // 第二天景点
+            {
+                title: "第二天行程",
+                color: "#44aa44",
+                points: [
+                    { name: "1. 塔什库尔干县", lng: 75.232988, lat: 37.777029 },
+                    { name: "2. 石头城", lng: 75.219803, lat: 37.779493 },
+                    { name: "3. 卡拉库里湖", lng: 75.050000, lat: 38.450000 },
+                    { name: "4. 慕士塔格冰河公园", lng: 75.100000, lat: 38.300000 }
+                ]
+            },
+            // 第三天景点
+            {
+                title: "第三天行程",
+                color: "#4444ff",
+                points: [
+                    { name: "1. 塔什库尔干县", lng: 75.232988, lat: 37.777029 },
+                    { name: "2. 瓦罕走廊", lng: 74.900000, lat: 37.100000 },
+                    { name: "3. 红其拉甫国门", lng: 74.877478, lat: 37.007348 },
+                    { name: "4. 塔合曼湿地", lng: 75.500000, lat: 38.200000 },
+                    { name: "5. 喀什市区", lng: 75.989746, lat: 39.470492 }
+                ]
+            }
+        ];
+
+        // 初始化地图
+        window.onload = function() {
+            // 创建地图实例
+            const map = new AMap.Map('map', {
+                zoom: 7,
+                center: [75.5, 38.5],
+                viewMode: '3D'
+            });
+            
+            // 添加地图控件
+            map.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
+                map.addControl(new AMap.ToolBar());
+                map.addControl(new AMap.Scale());
+            });
+            
+            // 创建一个点集合，用于存储所有点标记
+            const markers = [];
+            
+            // 遍历每天的行程，添加标记和路线
+            pointsList.forEach(day => {
+                // 为每个点添加标记
+                day.points.forEach(point => {
+                    const marker = new AMap.Marker({
+                        position: [point.lng, point.lat],
+                        title: point.name,
+                        map: map,
+                        content: `<div style="background-color: ${day.color}; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white;">${point.name.split('.')[0]}</div>`
+                    });
+                    
+                    // 添加信息窗体
+                    const infoWindow = new AMap.InfoWindow({
+                        content: `<div style="padding:10px;"><h3>${point.name}</h3><p>${day.title}</p></div>`,
+                        offset: new AMap.Pixel(0, -30)
+                    });
+                    
+                    marker.on('click', () => {
+                        infoWindow.open(map, marker.getPosition());
+                    });
+                    
+                    markers.push(marker);
+                });
+                
+                // 添加路线
+                const path = day.points.map(point => [point.lng, point.lat]);
+                const polyline = new AMap.Polyline({
+                    path: path,
+                    strokeColor: day.color,
+                    strokeWeight: 6,
+                    strokeOpacity: 0.8,
+                    zIndex: 50
+                });
+                
+                polyline.setMap(map);
+            });
+            
+            // 自动调整地图视野
+            map.setFitView(markers);
+        }
+
+        // 生成二维码
+        const qrCodeContainer = document.getElementById('qrcode');
+        if (qrCodeContainer) {
+            new QRCode(qrCodeContainer, {
+                text: "amapuri://workInAmap/createWithToken?polymericId=mcp_e4e8c5093eff4288a90760a97ab3b5ad&from=MCP",
+                width: 180,
+                height: 180,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+    </script>
+</body>
+</html> 
