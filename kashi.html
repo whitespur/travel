@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>喀什自驾游旅行指南</title>
+    <title>喀什三日游行程规划</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,26 @@
             margin: 0 auto;
             padding: 0 20px;
         }
+        .content-wrapper {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .left-content {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .right-content {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
         h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -43,9 +63,6 @@
             font-size: 1.3rem;
             margin: 1.5rem 0 0.5rem;
             color: #1e63b5;
-        }
-        p {
-            margin-bottom: 1rem;
         }
         .intro {
             background-color: white;
@@ -65,16 +82,6 @@
             position: relative;
             padding: 2rem 0;
         }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background-color: #1e63b5;
-            top: 0;
-            bottom: 0;
-            left: 50px;
-            margin-left: -2px;
-        }
         .day {
             margin-bottom: 2rem;
             position: relative;
@@ -82,42 +89,59 @@
             padding: 1.5rem;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-left: 70px;
         }
-        .day::before {
-            content: attr(data-date);
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            left: -95px;
-            background-color: #1e63b5;
-            border-radius: 50%;
+        .day-header {
+            background-color: var(--day-color);
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
-        .day::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            left: -33px;
-            background-color: white;
-            border: 4px solid #1e63b5;
-            top: 30px;
-            border-radius: 50%;
-            z-index: 1;
+        .day-overview {
+            background-color: rgba(var(--day-rgb), 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid rgba(var(--day-rgb), 0.2);
+        }
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .overview-item {
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(var(--day-rgb), 0.15);
+            border-radius: 5px;
+        }
+        .overview-item .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: rgba(var(--day-rgb), 1);
+            margin-bottom: 5px;
+        }
+        .overview-item .label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .day-1 {
+            --day-color: #ff4444;
+            --day-rgb: 255, 68, 68;
+        }
+        .day-2 {
+            --day-color: #44aa44;
+            --day-rgb: 68, 170, 68;
+        }
+        .day-3 {
+            --day-color: #4444ff;
+            --day-rgb: 68, 68, 255;
         }
         .attraction {
             margin-bottom: 1.5rem;
             padding-bottom: 1.5rem;
             border-bottom: 1px dashed #ddd;
-        }
-        .attraction:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
         }
         .time {
             font-weight: bold;
@@ -139,41 +163,6 @@
         #map {
             width: 100%;
             height: 100%;
-        }
-        .map-description {
-            padding: 1rem;
-            background-color: #f1f8ff;
-            border-radius: 5px;
-            margin-top: 1rem;
-        }
-        .map-description ul {
-            margin-left: 20px;
-        }
-        .map-button {
-            display: inline-block;
-            background-color: #1e63b5;
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 1rem;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        .map-button:hover {
-            background-color: #154a8c;
-        }
-        .spot-number {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            line-height: 24px;
-            text-align: center;
-            background-color: #1e63b5;
-            color: white;
-            border-radius: 50%;
-            margin-right: 8px;
-            font-weight: bold;
         }
         .map-legend {
             display: flex;
@@ -197,9 +186,75 @@
             height: 20px;
             border-radius: 3px;
             margin-right: 5px;
-            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .spot-number {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            background-color: var(--day-color);
+            color: white;
+            border-radius: 50%;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        #qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background: white;
+            border: 1px solid #eee;
+        }
+        .qr-label {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .amap-link {
+            display: inline-block;
+            background-color: #1e63b5;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+        }
+        .amap-link:hover {
+            background-color: #154a8c;
+        }
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            .right-content {
+                width: 100%;
+            }
+        }
+        .drive-time {
+            color: #666;
+            background-color: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .marker-label {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
         }
     </style>
+    <!-- 引入高德地图和二维码库 -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key=e5a73a6a1187af93c9f8a14a2035c205"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <header>
@@ -214,247 +269,301 @@
             <h2>行程概览</h2>
             <p>这是一次为期三天的喀什自驾游行程，带您领略帕米尔高原的壮美风景、喀什的历史风貌和浓郁的民族文化。前两晚将在塔什库尔干塔吉克自治县住宿，体验不一样的高原风情。</p>
             <div class="note">
-                <p><strong>注意：</strong>喀什地区与北京有3小时时差，当地时间比北京时间晚3小时。以下行程时间均为当地时间。</p>
+                <p><strong>注意：</strong>喀什地区与北京有3小时时差，当地时间比北京时间晚3小时。以下行程时间均为北京时间，请注意换算当地时间（例如：北京时间9:00相当于当地时间6:00）。</p>
             </div>
         </section>
 
-        <section class="map-container">
-            <!-- 高德地图 JavaScript API 展示区域 -->
-            <div class="map-legend">
-                <div class="legend-item">
-                    <div class="color-block" style="background-color: #FF0000;"></div>
-                    <span>第一天（5月21日）</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-block" style="background-color: #00FF00;"></div>
-                    <span>第二天（5月22日）</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-block" style="background-color: #0000FF;"></div>
-                    <span>第三天（5月23日）</span>
-                </div>
-            </div>
-            <div id="map"></div>
-            
-            <div class="map-description">
-                <h3>路线说明：</h3>
-                <ul>
-                    <li><span style="color:red">红色路线</span>：第一天行程（5月21日）- 喀什市区→白沙湖→木吉乡火山群→树洞公路→塔什库尔干县</li>
-                    <li><span style="color:green">绿色路线</span>：第二天行程（5月22日）- 塔什库尔干县→石头城→卡拉库里湖→慕士塔格冰河公园→塔什库尔干县</li>
-                    <li><span style="color:blue">蓝色路线</span>：第三天行程（5月23日）- 塔什库尔干县→瓦罕走廊→红其拉甫国门→塔合曼湿地→喀什市区</li>
-                </ul>
-                <a href="https://gaode.com" class="map-button" id="openMapButton" target="_blank">在高德地图APP中查看完整路线</a>
-            </div>
-        </section>
+        <div class="content-wrapper">
+            <div class="left-content">
+                <section class="map-container">
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <div class="color-block" style="background-color: #ff4444;"></div>
+                            <span>第一天（5月21日）</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-block" style="background-color: #44aa44;"></div>
+                            <span>第二天（5月22日）</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-block" style="background-color: #4444ff;"></div>
+                            <span>第三天（5月23日）</span>
+                        </div>
+                    </div>
+                    <div id="map"></div>
+                </section>
 
-        <section class="timeline">
-            <h2>详细行程</h2>
-            
-            <div class="day" data-date="D1">
-                <h3>第一天（5月21日）- 喀什到塔什库尔干</h3>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">1</span><span class="time">09:00</span> 喀什市区早餐</h4>
-                    <p>在酒店享用早餐，准备开始精彩的帕米尔高原之旅。</p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">2</span><span class="time">09:30</span> 喀什市区出发</h4>
-                    <p>从喀什市区酒店出发，沿喀什-塔什库尔干公路前进，开始精彩的帕米尔高原之旅。</p>
-                    <p><span class="distance">行驶距离：约290公里，行驶时间：约6小时（含观景时间）</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">3</span><span class="time">11:00</span> 抵达白沙湖</h4>
-                    <p>白沙湖是新疆著名的高山湖泊，湖水清澈，周围是壮观的沙丘和远处的雪山，景色独特。</p>
-                    <p><span class="distance">游览时间：约1.5小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">4</span><span class="time">13:00</span> 途经木吉乡火山群</h4>
-                    <p>参观神奇的火山地貌，感受大自然的鬼斧神工。此处火山口遗迹保存完好，是地质研究的好去处。</p>
-                    <p><span class="distance">游览时间：约1小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">5</span><span class="time">14:30</span> 午餐</h4>
-                    <p>在路边小镇享用午餐，补充能量。</p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">6</span><span class="time">15:30</span> 前往树洞公路</h4>
-                    <p>途经著名的树洞公路，两侧是百年胡杨，道路穿过树洞而过，景色壮观独特，是拍照的绝佳地点。</p>
-                    <p><span class="distance">游览时间：约1.5小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">7</span><span class="time">18:00</span> 抵达塔什库尔干塔吉克自治县</h4>
-                    <p>抵达住宿地点，办理入住。塔什库尔干县是中国唯一的塔吉克族自治县，位于帕米尔高原东部。</p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">8</span><span class="time">19:30</span> 晚餐及休息</h4>
-                    <p>品尝当地塔吉克族特色美食，休息调整，适应高原环境。</p>
-                </div>
+                <section class="timeline">
+                    <h2>详细行程</h2>
+                    
+                    <div class="day day-1">
+                        <div class="day-header">第一天（5月21日）- 喀什到塔什库尔干</div>
+                        <div class="day-overview">
+                            <strong>今日行程概览</strong>
+                            <div class="overview-grid">
+                                <div class="overview-item">
+                                    <div class="value">290公里</div>
+                                    <div class="label">总行驶距离</div>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="value">6小时</div>
+                                    <div class="label">预计行驶时间</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">1</span><span class="time">09:00</span> 起床</h4>
+                            <p>在酒店休息区享用早餐。</p>
+                            <p><span class="distance">用餐时间：约45分钟</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">2</span><span class="time">10:00</span> 喀什市区出发</h4>
+                            <p>从喀什市区酒店出发，沿喀什-塔什库尔干公路前进。</p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">3</span><span class="time">12:00</span> 白沙湖</h4>
+                            <p>白沙湖是新疆著名的高山湖泊，湖水清澈，周围是壮观的沙丘和远处的雪山。</p>
+                            <p><span class="distance">游览时间：约1小时</span></p>
+                            <p><span class="drive-time">从喀什市区开车约1.5小时（90公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">4</span><span class="time">13:30</span> 午餐休息</h4>
+                            <p>在前往克州冰川公园路上，在休息区简单用餐。建议自备干粮或在喀什准备好午餐盒饭。</p>
+                            <p><span class="distance">用餐时间：约30分钟</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">5</span><span class="time">14:30</span> 克州冰川国家森林公园</h4>
+                            <p>又名奥依塔克冰川公园，是一处集冰川、森林、高山草甸等自然景观于一体的国家级森林公园。</p>
+                            <p><span class="distance">游览时间：约2小时</span></p>
+                            <p><span class="drive-time">从白沙湖开车约30分钟（25公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">6</span><span class="time">17:00</span> 木吉乡火山群</h4>
+                            <p>参观神奇的火山地貌，感受大自然的鬼斧神工。</p>
+                            <p><span class="distance">游览时间：约1小时</span></p>
+                            <p><span class="drive-time">从克州冰川公园开车约30分钟（20公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">7</span><span class="time">18:30</span> 树洞公路</h4>
+                            <p>途经著名的树洞公路，两侧是百年胡杨，景色壮观独特。</p>
+                            <p><span class="distance">游览时间：约1小时</span></p>
+                            <p><span class="drive-time">从木吉乡开车约1小时（45公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">8</span><span class="time">21:00</span> 塔什库尔干县</h4>
+                            <p>抵达塔什库尔干塔吉克自治县，办理入住。</p>
+                            <p><span class="drive-time">从树洞公路开车约2小时（130公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">9</span><span class="time">21:30</span> 晚餐</h4>
+                            <p>在酒店附近餐厅享用晚餐，品尝当地特色美食。</p>
+                            <p><span class="distance">用餐时间：约1小时</span></p>
+                        </div>
+                    </div>
+
+                    <div class="day day-2">
+                        <div class="day-header">第二天（5月22日）- 塔什库尔干周边游</div>
+                        <div class="day-overview">
+                            <strong>今日行程概览</strong>
+                            <div class="overview-grid">
+                                <div class="overview-item">
+                                    <div class="value">320公里</div>
+                                    <div class="label">总行驶距离</div>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="value">6小时</div>
+                                    <div class="label">预计行驶时间</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">1</span><span class="time">09:00</span> 起床</h4>
+                            <p>在酒店享用早餐。</p>
+                            <p><span class="distance">用餐时间：约45分钟</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">2</span><span class="time">10:00</span> 班迪尔蓝湖</h4>
+                            <p>清晨观赏被誉为"帕米尔高原上的蓝宝石"的班迪尔蓝湖，湖水在晨光中呈现梦幻般的蓝色。</p>
+                            <p><span class="distance">游览时间：约1.5小时</span></p>
+                            <p><span class="drive-time">从塔什库尔干开车约30分钟（17公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">3</span><span class="time">12:00</span> 瓦罕走廊</h4>
+                            <p>探访历史悠久的丝绸之路重要通道。</p>
+                            <p><span class="distance">游览时间：约1.5小时</span></p>
+                            <p><span class="drive-time">从班迪尔蓝湖开车约1.5小时（83公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">4</span><span class="time">13:30</span> 午餐休息</h4>
+                            <p>在瓦罕走廊游客服务区简单用餐。建议自备干粮或在塔什库尔干准备好午餐盒饭。</p>
+                            <p><span class="distance">用餐时间：约30分钟</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">5</span><span class="time">14:30</span> 盘龙古道</h4>
+                            <p>体验千年古道的壮美，这条蜿蜒盘旋的山路见证了古代商旅往来的历史。</p>
+                            <p><span class="distance">游览时间：约1.5小时</span></p>
+                            <p><span class="drive-time">从瓦罕走廊开车约30分钟（20公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">6</span><span class="time">16:30</span> 红其拉甫国门</h4>
+                            <p>参观中巴边界的红其拉甫国门，感受祖国最西部的雄伟壮观。</p>
+                            <p><span class="distance">游览时间：约2小时</span></p>
+                            <p><span class="drive-time">从盘龙古道开车约30分钟（25公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">7</span><span class="time">19:00</span> 塔合曼湿地</h4>
+                            <p>欣赏高原湿地生态系统，观赏各种鸟类。</p>
+                            <p><span class="distance">游览时间：约1小时</span></p>
+                            <p><span class="drive-time">从红其拉甫开车约1小时（95公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">8</span><span class="time">21:00</span> 返回塔什库尔干</h4>
+                            <p>返回塔什库尔干县住宿。</p>
+                            <p><span class="drive-time">从塔合曼湿地开车约1小时（80公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">9</span><span class="time">21:30</span> 晚餐</h4>
+                            <p>在酒店附近餐厅享用晚餐。</p>
+                            <p><span class="distance">用餐时间：约1小时</span></p>
+                        </div>
+                    </div>
+
+                    <div class="day day-3">
+                        <div class="day-header">第三天（5月23日）- 塔什库尔干返回喀什</div>
+                        <div class="day-overview">
+                            <strong>今日行程概览</strong>
+                            <div class="overview-grid">
+                                <div class="overview-item">
+                                    <div class="value">240公里</div>
+                                    <div class="label">总行驶距离</div>
+                                </div>
+                                <div class="overview-item">
+                                    <div class="value">4.5小时</div>
+                                    <div class="label">预计行驶时间</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">1</span><span class="time">09:00</span> 起床</h4>
+                            <p>在酒店享用早餐。</p>
+                            <p><span class="distance">用餐时间：约45分钟</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">2</span><span class="time">10:00</span> 石头城</h4>
+                            <p>参观具有两千多年历史的石头城遗址。</p>
+                            <p><span class="distance">游览时间：约1小时</span></p>
+                            <p><span class="drive-time">从塔什库尔干县城约10分钟（3公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">3</span><span class="time">11:30</span> 卡拉库里湖</h4>
+                            <p>欣赏被誉为"天堂湖"的卡拉库里湖美景。</p>
+                            <p><span class="distance">游览时间：约2小时</span></p>
+                            <p><span class="drive-time">从石头城开车约1小时（70公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">4</span><span class="time">13:30</span> 午餐</h4>
+                            <p>在卡拉库里湖景区餐厅享用午餐。</p>
+                            <p><span class="distance">用餐时间：约1小时</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">5</span><span class="time">15:00</span> 慕士塔格冰河公园</h4>
+                            <p>近距离观赏雄伟的慕士塔格峰和壮观的冰川景观，徒步登高500米感受冰川的磅礴气势。</p>
+                            <p><span class="distance">游览时间：约3小时（含徒步和休息时间）</span></p>
+                            <p><span class="drive-time">从卡拉库里湖开车约30分钟（20公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">6</span><span class="time">19:00</span> 返回喀什</h4>
+                            <p>返回喀什市区。</p>
+                            <p><span class="drive-time">从慕士塔格冰河公园开车约3小时（147公里）</span></p>
+                        </div>
+                        <div class="attraction">
+                            <h4><span class="spot-number">7</span><span class="time">20:00</span> 晚餐</h4>
+                            <p>在喀什老城区享用特色晚餐。</p>
+                            <p><span class="distance">用餐时间：约1.5小时</span></p>
+                        </div>
+                    </div>
+                </section>
             </div>
-            
-            <div class="day" data-date="D2">
-                <h3>第二天（5月22日）- 塔什库尔干一日游</h3>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">1</span><span class="time">09:00</span> 早餐后出发</h4>
-                    <p>享用早餐后，开始探索塔什库尔干县周边景点。</p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">2</span><span class="time">09:30</span> 参观石头城</h4>
-                    <p>石头城是古代丝绸之路上的重要关隘，距今已有两千多年历史，见证了帕米尔高原的历史变迁。</p>
-                    <p><span class="distance">游览时间：约2小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">3</span><span class="time">11:30</span> 前往卡拉库里湖</h4>
-                    <p>驱车前往被誉为"天堂湖"的卡拉库里湖，沿途可欣赏帕米尔高原壮丽的自然风光。</p>
-                    <p><span class="distance">行驶距离：约70公里，行驶时间：约1.5小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">4</span><span class="time">13:00</span> 抵达卡拉库里湖</h4>
-                    <p>卡拉库里湖是慕士塔格峰下的高山湖泊，湖水清澈见底，四周环绕着雪山，景色壮美，是摄影爱好者的天堂。</p>
-                    <p><span class="distance">游览时间：约3小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">5</span><span class="time">16:00</span> 前往慕士塔格冰河公园</h4>
-                    <p>探索慕士塔格冰河公园，欣赏壮观的冰川景观。</p>
-                    <p><span class="distance">行驶距离：约30公里，游览时间：约2小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">6</span><span class="time">19:00</span> 返回塔什库尔干县住宿</h4>
-                    <p>返回县城酒店，享用晚餐，休息调整。</p>
-                    <p><span class="distance">行驶距离：约90公里，行驶时间：约2小时</span></p>
-                </div>
+
+            <div class="right-content">
+                <h3>手机查看行程</h3>
+                <div id="qrcode"></div>
+                <p class="qr-label">扫描二维码在手机上查看行程</p>
+                <a href="amapuri://workInAmap/createWithToken?polymericId=mcp_408975b6156349539d70ae1d91fadf3e&from=MCP" class="amap-link">在高德地图中打开</a>
             </div>
-            
-            <div class="day" data-date="D3">
-                <h3>第三天（5月23日）- 塔什库尔干返回喀什</h3>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">1</span><span class="time">09:00</span> 早餐后出发</h4>
-                    <p>享用早餐后，准备返回喀什市区。</p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">2</span><span class="time">09:30</span> 前往瓦罕走廊</h4>
-                    <p>沿着历史悠久的瓦罕走廊前行，这里是古代丝绸之路的重要通道，也是中国与阿富汗、巴基斯坦和塔吉克斯坦接壤的地区。</p>
-                    <p><span class="distance">行驶距离：约60公里，游览时间：约2小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">3</span><span class="time">11:30</span> 抵达红其拉甫国门</h4>
-                    <p>参观中巴边界的红其拉甫国门，站在海拔4733米的高度，感受"世界屋脊"的壮丽景色。</p>
-                    <p><span class="distance">游览时间：约1.5小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">4</span><span class="time">13:30</span> 午餐</h4>
-                    <p>在返回途中的小镇享用午餐。</p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">5</span><span class="time">14:30</span> 参观塔合曼湿地</h4>
-                    <p>途经塔合曼湿地，这里是高原上难得的湿地生态系统，栖息着多种鸟类，景色优美。</p>
-                    <p><span class="distance">游览时间：约1.5小时</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">6</span><span class="time">18:00</span> 抵达喀什市区</h4>
-                    <p>返回喀什市区，抵达酒店休息。</p>
-                    <p><span class="distance">行驶距离：约290公里，行驶时间：约5小时（含观景时间）</span></p>
-                </div>
-                
-                <div class="attraction">
-                    <h4><span class="spot-number">7</span><span class="time">19:30</span> 告别晚餐</h4>
-                    <p>在喀什市区享用告别晚餐，品尝当地特色美食，回顾三天精彩的旅程。</p>
-                </div>
-            </div>
-        </section>
+        </div>
     </div>
 
-    <!-- 引入高德地图 JavaScript API -->
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=e5a73a6a1187af93c9f8a14a2035c205"></script>
     <script>
         // 定义三天行程的各个景点坐标
         const pointsList = [
             // 第一天景点
             {
                 title: "第一天行程",
-                color: "#FF0000",
+                color: "#ff4444",
                 points: [
                     { name: "1. 喀什市区", lng: 75.989746, lat: 39.470492 },
                     { name: "2. 白沙湖", lng: 75.700000, lat: 39.200000 },
-                    { name: "3. 木吉乡火山群", lng: 75.400000, lat: 39.100000 },
-                    { name: "4. 树洞公路", lng: 75.250000, lat: 38.900000 },
-                    { name: "5. 塔什库尔干县", lng: 75.232988, lat: 37.777029 }
+                    { name: "3. 克州冰川国家森林公园", lng: 75.523549, lat: 38.980120 },
+                    { name: "4. 木吉乡火山群", lng: 75.400000, lat: 39.100000 },
+                    { name: "5. 树洞公路", lng: 75.250000, lat: 38.900000 },
+                    { name: "6. 塔什库尔干县", lng: 75.232988, lat: 37.777029 }
                 ]
             },
             // 第二天景点
             {
                 title: "第二天行程",
-                color: "#00FF00",
+                color: "#44aa44",
                 points: [
                     { name: "1. 塔什库尔干县", lng: 75.232988, lat: 37.777029 },
-                    { name: "2. 石头城", lng: 75.219803, lat: 37.779493 },
-                    { name: "3. 卡拉库里湖", lng: 75.050000, lat: 38.450000 },
-                    { name: "4. 慕士塔格冰河公园", lng: 75.100000, lat: 38.300000 },
-                    { name: "5. 塔什库尔干县", lng: 75.232988, lat: 37.777029 }
+                    { name: "2. 班迪尔蓝湖", lng: 75.150000, lat: 37.850000 },
+                    { name: "3. 瓦罕走廊", lng: 74.900000, lat: 37.100000 },
+                    { name: "4. 盘龙古道", lng: 74.890000, lat: 37.050000 },
+                    { name: "5. 红其拉甫国门", lng: 74.877478, lat: 37.007348 },
+                    { name: "6. 塔合曼湿地", lng: 75.500000, lat: 38.200000 },
+                    { name: "7. 塔什库尔干县", lng: 75.232988, lat: 37.777029 }
                 ]
             },
             // 第三天景点
             {
                 title: "第三天行程",
-                color: "#0000FF",
+                color: "#4444ff",
                 points: [
                     { name: "1. 塔什库尔干县", lng: 75.232988, lat: 37.777029 },
-                    { name: "2. 瓦罕走廊", lng: 74.900000, lat: 37.100000 },
-                    { name: "3. 红其拉甫国门", lng: 74.877478, lat: 37.007348 },
-                    { name: "4. 塔合曼湿地", lng: 75.500000, lat: 38.200000 },
+                    { name: "2. 石头城", lng: 75.219803, lat: 37.779493 },
+                    { name: "3. 卡拉库里湖", lng: 75.050000, lat: 38.450000 },
+                    { name: "4. 慕士塔格冰河公园", lng: 75.100000, lat: 38.300000 },
                     { name: "5. 喀什市区", lng: 75.989746, lat: 39.470492 }
                 ]
             }
         ];
 
-        // 页面加载完成后初始化地图
-        window.onload = function() {
-            // 确保地图API已加载
-            if (typeof AMap !== 'undefined') {
-                initMap();
-            } else {
-                // 如果API没有加载，等待500ms后重试
-                setTimeout(function() {
-                    if (typeof AMap !== 'undefined') {
-                        initMap();
-                    } else {
-                        alert('高德地图API加载失败，请刷新页面重试');
-                    }
-                }, 500);
-            }
-        };
-
         // 初始化地图
-        function initMap() {
+        window.onload = function() {
             // 创建地图实例
             const map = new AMap.Map('map', {
-                zoom: 7,  // 初始缩放级别
-                center: [75.5, 38.5],  // 初始中心点
-                viewMode: '3D'  // 使用3D视图更好地展示山区地形
+                zoom: 7,
+                center: [75.5, 38.5],
+                viewMode: '3D'
             });
             
             // 添加地图控件
             map.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
-                map.addControl(new AMap.ToolBar());
-                map.addControl(new AMap.Scale());
+                const toolBar = new AMap.ToolBar({
+                    position: {
+                        top: '50%',
+                        right: '20px',
+                        transform: 'translateY(-50%)'
+                    }
+                });
+                const scale = new AMap.Scale({
+                    position: {
+                        bottom: '20px',
+                        left: '20px'
+                    }
+                });
+                map.addControl(toolBar);
+                map.addControl(scale);
             });
             
             // 创建一个点集合，用于存储所有点标记
@@ -464,52 +573,59 @@
             pointsList.forEach(day => {
                 // 为每个点添加标记
                 day.points.forEach(point => {
-                    // 创建一个带文本的标记点
-                    const markerContent = `
-                        <div class="amap-marker-label" style="background-color: white; border: 1px solid #ccc; padding: 5px; border-radius: 3px;">
-                            ${point.name}
-                        </div>
+                    const markerContent = document.createElement('div');
+                    markerContent.className = 'marker-container';
+                    
+                    // 创建数字标记
+                    const numberDiv = document.createElement('div');
+                    numberDiv.style.cssText = `
+                        background-color: ${day.color};
+                        color: white;
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        border: 2px solid white;
+                        margin-bottom: 2px;
                     `;
-
-                    // 自定义标记点
+                    numberDiv.textContent = point.name.split('.')[0];
+                    
+                    // 创建地点名称标签
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'marker-label';
+                    labelDiv.textContent = point.name.split('. ')[1];
+                    
+                    markerContent.appendChild(numberDiv);
+                    markerContent.appendChild(labelDiv);
+                    
                     const marker = new AMap.Marker({
                         position: [point.lng, point.lat],
+                        content: markerContent,
                         title: point.name,
-                        map: map,
-                        anchor: 'bottom-center',
-                        offset: new AMap.Pixel(0, 0),
-                        content: `<div style="background-color: ${day.color}; width: 15px; height: 15px; border-radius: 50%; border: 2px solid white;"></div>`
+                        map: map
                     });
                     
-                    // 添加文本标签
-                    marker.setLabel({
-                        direction: 'top',
-                        offset: new AMap.Pixel(0, -5),
-                        content: `<div style="font-size: 12px; background-color: white; padding: 2px 5px; border-radius: 3px;">${point.name}</div>`
-                    });
-                    
-                    // 添加信息窗体内容
+                    // 添加信息窗体
                     const infoWindow = new AMap.InfoWindow({
-                        content: `<div style="padding:10px;"><h3>${point.name}</h3><p>位于${day.title}路线上</p></div>`,
-                        offset: new AMap.Pixel(0, -30),
-                        isCustom: true
+                        content: `<div style="padding:10px;"><h3>${point.name}</h3><p>${day.title}</p></div>`,
+                        offset: new AMap.Pixel(0, -30)
                     });
                     
-                    // 给标记点添加点击事件
-                    marker.on('click', function() {
+                    marker.on('click', () => {
                         infoWindow.open(map, marker.getPosition());
                     });
                     
                     markers.push(marker);
                 });
                 
-                // 提取路径点
-                const path = day.points.map(point => [point.lng, point.lat]);
-                
                 // 添加路线
+                const path = day.points.map(point => [point.lng, point.lat]);
                 const polyline = new AMap.Polyline({
                     path: path,
-                    strokeColor: day.color,  // 使用每天指定的颜色
+                    strokeColor: day.color,
                     strokeWeight: 6,
                     strokeOpacity: 0.8,
                     zIndex: 50
@@ -518,17 +634,18 @@
                 polyline.setMap(map);
             });
             
-            // 自动调整地图视野以包含所有标记点
+            // 自动调整地图视野
             map.setFitView(markers);
-            
-            // 为打开高德地图按钮添加链接
-            document.getElementById('openMapButton').href = generateAmapAppLink();
-        }
-        
-        // 生成高德地图APP打开链接
-        function generateAmapAppLink() {
-            // 使用高德导航链接指向塔什库尔干县
-            return `https://uri.amap.com/navigation?to=75.232988,37.777029,塔什库尔干县&callnative=1`;
+
+            // 生成二维码
+            new QRCode(document.getElementById('qrcode'), {
+                text: "amapuri://workInAmap/createWithToken?polymericId=mcp_408975b6156349539d70ae1d91fadf3e&from=MCP",
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
         }
     </script>
 </body>

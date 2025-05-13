@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新疆伊犁天山环线自驾游攻略</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #1e90ff, #00bfff);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .day-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .day-title {
+            color: #1e90ff;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #1e90ff;
+            padding-bottom: 10px;
+        }
+        .timeline {
+            padding-left: 20px;
+            border-left: 2px solid #1e90ff;
+            margin: 20px 0;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: #1e90ff;
+            border-radius: 50%;
+        }
+        .content-wrapper {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .left-content {
+            flex: 1;
+        }
+        .right-content {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .map-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .map-legend {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            margin-bottom: 5px;
+        }
+        .color-block {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        .static-map {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: block;
+        }
+        .scenic-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .scenic-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .scenic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .scenic-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .scenic-card-content {
+            padding: 15px;
+        }
+        .scenic-card-content h3 {
+            color: #1e90ff;
+            margin-bottom: 10px;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .map-app-link {
+            display: inline-block;
+            margin-top: 10px;
+            background: #1e90ff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .map-app-link:hover {
+            background: #0c75e0;
+        }
+        .day-route {
+            margin-bottom: 30px;
+        }
+        .day-route h3 {
+            color: #1e90ff;
+            margin-bottom: 15px;
+        }
+        .marker-label {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+        #qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background: white;
+            border: 1px solid #eee;
+        }
+        .qr-label {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .drive-time {
+            color: #666;
+            background-color: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        .day-overview {
+            background-color: rgba(var(--day-rgb), 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid rgba(var(--day-rgb), 0.2);
+        }
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .overview-item {
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(var(--day-rgb), 0.15);
+            border-radius: 5px;
+        }
+        .overview-item .value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: rgba(var(--day-rgb), 1);
+            margin-bottom: 5px;
+        }
+        .overview-item .label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .day-1 {
+            --day-color: #ff4444;
+            --day-rgb: 255, 68, 68;
+        }
+        .day-2 {
+            --day-color: #44aa44;
+            --day-rgb: 68, 170, 68;
+        }
+        .day-3 {
+            --day-color: #4444ff;
+            --day-rgb: 68, 68, 255;
+        }
+        .day-4 {
+            --day-color: #ff7700;
+            --day-rgb: 255, 119, 0;
+        }
+        .day-5 {
+            --day-color: #9900cc;
+            --day-rgb: 153, 0, 204;
+        }
+        .day-6 {
+            --day-color: #00cccc;
+            --day-rgb: 0, 204, 204;
+        }
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            .right-content {
+                width: 100%;
+            }
+            .map-legend {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .legend-item {
+                margin-bottom: 10px;
+            }
+        }
+        .trip-overview {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .trip-overview h2 {
+            color: #1e90ff;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #1e90ff;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        
+        .trip-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border-left: 4px solid #1e90ff;
+        }
+        
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #1e90ff;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .time-note {
+            background-color: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #856404;
+        }
+    </style>
+    <!-- 引入高德地图API和二维码库 -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key=e5a73a6a1187af93c9f8a14a2035c205"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>新疆伊犁天山环线自驾游攻略</h1>
+        <p>5月26日 - 6月1日</p>
+    </div>
+
+    <div class="note">
+        <h3>特别提醒</h3>
+        <p>新疆时间比北京时间晚2小时，以下时间均为北京时间（相应时间已调整）</p>
+    </div>
+    
+    <div class="trip-overview">
+        <h2>自驾旅程概览</h2>
+        <div class="trip-stats">
+            <div class="stat-card">
+                <div class="stat-value">7</div>
+                <div class="stat-label">行程天数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1,860</div>
+                <div class="stat-label">总行驶里程(公里)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">34</div>
+                <div class="stat-label">总行驶时间(小时)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">景点数量</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 15px;">
+            <span class="time-note">注意：本攻略时间均为北京时间，实际出行时请将时间调整为新疆当地时间（比北京时间晚2小时）</span>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="left-content">
+            <div class="map-container">
+                <h2>行程地图总览</h2>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="color-block" style="background-color: #ff4444;"></div>
+                        <span>Day 1: 乌鲁木齐 → 果子沟大桥 → 赛里木湖</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-block" style="background-color: #44aa44;"></div>
+                        <span>Day 2: 赛里木湖 → 霍尔果斯口岸 → 霍城薰衣草 → 伊宁</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-block" style="background-color: #4444ff;"></div>
+                        <span>Day 3: 伊宁 → 喀拉峻草原 → 特克斯</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-block" style="background-color: #ff7700;"></div>
+                        <span>Day 4: 特克斯 → 夏塔古道 → 库尔德宁</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-block" style="background-color: #9900cc;"></div>
+                        <span>Day 5: 库尔德宁 → 那拉提草原 → 巴音布鲁克</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-block" style="background-color: #00cccc;"></div>
+                        <span>Day 6-7: 巴音布鲁克 → 独库公路 → 乌鲁木齐</span>
+                    </div>
+                </div>
+                <div id="map"></div>
+                <p>点击下方链接在高德地图APP中查看详细路线：</p>
+                <a href="amapuri://workInAmap/createWithToken?polymericId=mcp_408975b6156349539d70ae1d91fadf3e&from=MCP" class="map-app-link" target="_blank">在高德地图APP中打开</a>
+            </div>
+        </div>
+
+        <div class="right-content">
+            <h3>手机查看行程</h3>
+            <div id="qrcode"></div>
+            <p class="qr-label">扫描二维码在手机上查看行程</p>
+            <a href="amapuri://workInAmap/createWithToken?polymericId=mcp_408975b6156349539d70ae1d91fadf3e&from=MCP" class="map-app-link">在高德地图中打开</a>
+        </div>
+    </div>
+
+    <div class="day-card day-1" style="--day-color: #ff4444; --day-rgb: 255, 68, 68;">
+        <h2 class="day-title">Day 1 (5月26日)</h2>
+        <div class="day-overview">
+            <strong>今日行程概览</strong>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="value">390公里</div>
+                    <div class="label">总行驶距离</div>
+                </div>
+                <div class="overview-item">
+                    <div class="value">6小时</div>
+                    <div class="label">预计行驶时间</div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>早上10:00</h3>
+                <p>从乌鲁木齐出发，经G30高速，前往果子沟大桥</p>
+                <p><span class="drive-time">行驶约350公里，预计5小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午15:00</h3>
+                <p>到达果子沟大桥，游览约1小时</p>
+                <p>果子沟大桥是连接伊犁与乌鲁木齐的交通要道，景色壮观</p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午16:30</h3>
+                <p>前往赛里木湖</p>
+                <p><span class="drive-time">行驶约40公里，预计30分钟</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午17:00-傍晚20:00</h3>
+                <p>游览赛里木湖，欣赏高原湖泊的壮美景色</p>
+            </div>
+            <div class="timeline-item">
+                <h3>傍晚20:00</h3>
+                <p>在赛里木湖景区住宿，欣赏日落美景</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card day-2" style="--day-color: #44aa44; --day-rgb: 68, 170, 68;">
+        <h2 class="day-title">Day 2 (5月27日)</h2>
+        <div class="day-overview">
+            <strong>今日行程概览</strong>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="value">210公里</div>
+                    <div class="label">总行驶距离</div>
+                </div>
+                <div class="overview-item">
+                    <div class="value">3.5小时</div>
+                    <div class="label">预计行驶时间</div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>早上10:00</h3>
+                <p>赛里木湖晨景，早餐后出发前往霍尔果斯口岸</p>
+                <p><span class="drive-time">行驶约100公里，预计1.5小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>上午12:00-13:30</h3>
+                <p>参观霍尔果斯口岸和国门景区</p>
+            </div>
+            <div class="timeline-item">
+                <h3>中午14:00</h3>
+                <p>前往霍城薰衣草基地</p>
+                <p><span class="drive-time">行驶约30公里，预计30分钟</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>中午14:30-16:30</h3>
+                <p>游览霍城薰衣草基地，欣赏紫色花海</p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午17:00</h3>
+                <p>前往伊宁市</p>
+                <p><span class="drive-time">行驶约80公里，预计1.5小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>傍晚19:00</h3>
+                <p>抵达伊宁市，游览伊宁老城区，品尝当地美食</p>
+                <p>晚上在伊宁市住宿</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card day-3" style="--day-color: #4444ff; --day-rgb: 68, 68, 255;">
+        <h2 class="day-title">Day 3 (5月28日)</h2>
+        <div class="day-overview">
+            <strong>今日行程概览</strong>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="value">250公里</div>
+                    <div class="label">总行驶距离</div>
+                </div>
+                <div class="overview-item">
+                    <div class="value">4.5小时</div>
+                    <div class="label">预计行驶时间</div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>早上11:00</h3>
+                <p>从伊宁出发前往喀拉峻草原</p>
+                <p><span class="drive-time">行驶约150公里，预计2.5小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>中午14:00-17:00</h3>
+                <p>游览喀拉峻大草原，体验骑马、游湖等活动</p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午17:30</h3>
+                <p>出发前往特克斯</p>
+                <p><span class="drive-time">行驶约100公里，预计2小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>傍晚19:30</h3>
+                <p>抵达特克斯，参观八卦城</p>
+                <p>晚上在特克斯住宿</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card day-4" style="--day-color: #ff7700; --day-rgb: 255, 119, 0;">
+        <h2 class="day-title">Day 4 (5月29日)</h2>
+        <div class="day-overview">
+            <strong>今日行程概览</strong>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="value">250公里</div>
+                    <div class="label">总行驶距离</div>
+                </div>
+                <div class="overview-item">
+                    <div class="value">4.5小时</div>
+                    <div class="label">预计行驶时间</div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>早上10:30</h3>
+                <p>特克斯晨景，早餐后出发前往夏塔古道</p>
+                <p><span class="drive-time">行驶约120公里，预计2小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>上午13:00-16:00</h3>
+                <p>游览夏塔古道国家森林公园，徒步体验</p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午16:30</h3>
+                <p>前往库尔德宁自然保护区</p>
+                <p><span class="drive-time">行驶约130公里，预计2.5小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>傍晚19:00</h3>
+                <p>抵达库尔德宁，游览保护区景点</p>
+                <p>晚上在库尔德宁住宿</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card day-5" style="--day-color: #9900cc; --day-rgb: 153, 0, 204;">
+        <h2 class="day-title">Day 5 (5月30日)</h2>
+        <div class="day-overview">
+            <strong>今日行程概览</strong>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="value">230公里</div>
+                    <div class="label">总行驶距离</div>
+                </div>
+                <div class="overview-item">
+                    <div class="value">4.5小时</div>
+                    <div class="label">预计行驶时间</div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>早上11:00</h3>
+                <p>库尔德宁晨景，早餐后出发前往那拉提草原</p>
+                <p><span class="drive-time">行驶约110公里，预计2小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>上午13:00-16:00</h3>
+                <p>那拉提草原游览，体验空中草原美景</p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午16:30</h3>
+                <p>前往巴音布鲁克草原</p>
+                <p><span class="drive-time">行驶约120公里，预计2.5小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>傍晚19:00</h3>
+                <p>抵达巴音布鲁克，观赏天鹅湖和九曲十八弯</p>
+                <p>晚上在巴音布鲁克住宿</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="day-card day-6" style="--day-color: #00cccc; --day-rgb: 0, 204, 204;">
+        <h2 class="day-title">Day 6-7 (5月31日-6月1日)</h2>
+        <div class="day-overview">
+            <strong>今日行程概览</strong>
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="value">530公里</div>
+                    <div class="label">总行驶距离</div>
+                </div>
+                <div class="overview-item">
+                    <div class="value">11小时</div>
+                    <div class="label">预计行驶时间</div>
+                </div>
+            </div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>Day 6 早上10:00</h3>
+                <p>巴音布鲁克晨景，早餐后开始独库公路穿越之旅</p>
+                <p>全天在独库公路上行驶，途经多个观景台</p>
+                <p><span class="drive-time">行驶约250公里，预计需要全天时间</span></p>
+                <p>晚上在独库公路沿线住宿</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Day 7 早上10:00</h3>
+                <p>继续独库公路行程，前往乌鲁木齐</p>
+                <p><span class="drive-time">行驶约280公里，预计5-6小时</span></p>
+            </div>
+            <div class="timeline-item">
+                <h3>下午16:00</h3>
+                <p>抵达乌鲁木齐市区</p>
+                <p>游览大巴扎、红山公园等市区景点</p>
+            </div>
+            <div class="timeline-item">
+                <h3>晚上</h3>
+                <p>返程</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="margin-top: 40px; color: #1e90ff; text-align: center;">景点一览</h2>
+    <div class="scenic-cards">
+        <div class="scenic-card">
+            <img src="https://store.is.autonavi.com/showpic/b9525fee05ebe4b885dcda1378db0f53" alt="赛里木湖">
+            <div class="scenic-card-content">
+                <h3>赛里木湖</h3>
+                <p>新疆最大的高山湖泊，被誉为'大西洋最后一滴眼泪'。湖水清澈湛蓝，周围是连绵的雪山和草原。</p>
+                <p>最佳游览时间：2-3小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="https://aos-comment.amap.com/B0FFFDXFBK/comment/f117a256a295c1b574fd25c2a1d30e18_2048_2048_80.jpg" alt="果子沟大桥">
+            <div class="scenic-card-content">
+                <h3>果子沟大桥</h3>
+                <p>世界上最高的斜拉桥之一，是伊犁地区的交通枢纽和著名景点，桥下的峡谷风光十分壮丽。</p>
+                <p>最佳游览时间：约1小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="https://aos-comment.amap.com/B03E700MMK/comment/7ecac3911df175cbea482e9a440731c0_2048_2048_80.jpg" alt="霍尔果斯口岸">
+            <div class="scenic-card-content">
+                <h3>霍尔果斯口岸</h3>
+                <p>中哈边境重要的口岸，也是著名的旅游观光胜地，可以感受到浓厚的异域风情。</p>
+                <p>最佳游览时间：1-1.5小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="http://store.is.autonavi.com/showpic/8a22945c41c737e3b114ed6a8336ddbe" alt="喀拉峻草原">
+            <div class="scenic-card-content">
+                <h3>喀拉峻草原</h3>
+                <p>有'西部第一草原'之称，以广阔的草场和迷人的湖泊著称，是休闲游玩的理想之地。</p>
+                <p>最佳游览时间：2-3小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="http://store.is.autonavi.com/showpic/31a461da30687fa23ad9133debb153aa" alt="特克斯八卦城">
+            <div class="scenic-card-content">
+                <h3>特克斯八卦城</h3>
+                <p>全球最大的八卦城，按照易经八卦图形规划建设的城市，独特的城市布局令人叹为观止。</p>
+                <p>最佳游览时间：1-2小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="https://aos-comment.amap.com/B0FFL1B1VV/comment/9c3a84a1942e130a6f9a9dec8182710a_2048_2048_80.jpg" alt="夏塔古道">
+            <div class="scenic-card-content">
+                <h3>夏塔古道</h3>
+                <p>古丝绸之路上的重要驿道，风景优美，有着丰富的历史文化，适合徒步爱好者。</p>
+                <p>最佳游览时间：2-3小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="http://store.is.autonavi.com/showpic/570d320a301c0939079f13697081a9df" alt="库尔德宁">
+            <div class="scenic-card-content">
+                <h3>库尔德宁</h3>
+                <p>天山北麓原始森林自然保护区，以云杉为主的原始森林景观，空气清新，环境幽静。</p>
+                <p>最佳游览时间：1-2小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="http://store.is.autonavi.com/showpic/7c256f7d830811623142aad7e45b1a50" alt="那拉提草原">
+            <div class="scenic-card-content">
+                <h3>那拉提草原</h3>
+                <p>空中草原，是世界四大草原之一，景色壮丽，适合骑马、徒步等活动，可以体验哈萨克族的风俗文化。</p>
+                <p>最佳游览时间：2-3小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="https://aos-comment.amap.com/B0FFGLQNN0/comment/21DE1E36_DF4A_4847_B618_BC54BB611900_L0_001_2000_1500_1735115016413_77010752.jpg" alt="巴音布鲁克草原">
+            <div class="scenic-card-content">
+                <h3>巴音布鲁克草原</h3>
+                <p>中国第二大草原，以'九曲十八弯'和天鹅湖闻名，是观赏野生天鹅的绝佳地点。</p>
+                <p>最佳游览时间：2-3小时</p>
+            </div>
+        </div>
+        <div class="scenic-card">
+            <img src="https://aos-comment.amap.com/B0KRS18B59/comment/4D62AB01_F891_4CC2_921E_2E037ED021F0_L0_001_1289_1530_1728331712880_59588207.jpg" alt="独库公路">
+            <div class="scenic-card-content">
+                <h3>独库公路</h3>
+                <p>新疆最美公路之一，途经天山山脉，沿途风景壮丽，有'新疆66号公路'之称</p>
+                <p>最佳游览时间：全天</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="note" style="margin-top: 40px;">
+        <h3>旅行贴士</h3>
+        <ul style="list-style: none; padding-left: 0;">
+            <li>1. 独库公路海拔最高处接近3000米，注意防寒保暖，可能会出现高原反应</li>
+            <li>2. 建议准备充足的干粮和饮用水，新疆地区部分路段加油站和便利店较少</li>
+            <li>3. 确保车辆状态良好，建议进行全面检查，准备备用轮胎</li>
+            <li>4. 部分地区手机信号可能不稳定，建议下载离线地图，带好纸质地图</li>
+            <li>5. 草原地区早晚温差大，需要准备厚薄衣物，注意防晒和防风</li>
+            <li>6. 部分景区门票需提前预订，特别是节假日期间</li>
+            <li>7. 注意保护环境，请勿随意丢弃垃圾，尊重当地民俗和习惯</li>
+            <li>8. 建议携带常用药品，如：感冒药、肠胃药、晕车药等</li>
+            <li>9. 自驾路程长，建议每隔两小时停车休息，避免疲劳驾驶</li>
+            <li>10. 入住前建议提前预订酒店，旺季可能客满</li>
+        </ul>
+    </div>
+
+    <script>
+        // 定义行程中的各个景点坐标
+        const pointsList = [
+            // 第一天景点
+            {
+                title: "Day 1: 乌鲁木齐 → 果子沟大桥 → 赛里木湖",
+                color: "#ff4444",
+                points: [
+                    { name: "乌鲁木齐", lng: 87.617733, lat: 43.792818 },
+                    { name: "果子沟大桥", lng: 80.883465, lat: 44.396942 },
+                    { name: "赛里木湖", lng: 81.167116, lat: 44.600835 }
+                ]
+            },
+            // 第二天景点
+            {
+                title: "Day 2: 赛里木湖 → 霍尔果斯口岸 → 霍城薰衣草 → 伊宁",
+                color: "#44aa44",
+                points: [
+                    { name: "赛里木湖", lng: 81.167116, lat: 44.600835 },
+                    { name: "霍尔果斯口岸", lng: 80.414268, lat: 44.213776 },
+                    { name: "霍城薰衣草", lng: 80.872752, lat: 44.213309 },
+                    { name: "伊宁", lng: 81.317946, lat: 43.92186 }
+                ]
+            },
+            // 第三天景点
+            {
+                title: "Day 3: 伊宁 → 喀拉峻草原 → 特克斯",
+                color: "#4444ff",
+                points: [
+                    { name: "伊宁", lng: 81.317946, lat: 43.92186 },
+                    { name: "喀拉峻草原", lng: 82.901993, lat: 43.050095 },
+                    { name: "特克斯", lng: 82.165529, lat: 43.218941 }
+                ]
+            },
+            // 第四天景点
+            {
+                title: "Day 4: 特克斯 → 夏塔古道 → 库尔德宁",
+                color: "#ff7700",
+                points: [
+                    { name: "特克斯", lng: 82.165529, lat: 43.218941 },
+                    { name: "夏塔古道", lng: 81.158462, lat: 43.153252 },
+                    { name: "库尔德宁", lng: 82.79274, lat: 43.454693 }
+                ]
+            },
+            // 第五天景点
+            {
+                title: "Day 5: 库尔德宁 → 那拉提草原 → 巴音布鲁克",
+                color: "#9900cc",
+                points: [
+                    { name: "库尔德宁", lng: 82.79274, lat: 43.454693 },
+                    { name: "那拉提草原", lng: 83.261323, lat: 43.184851 },
+                    { name: "巴音布鲁克", lng: 84.150023, lat: 43.03155 }
+                ]
+            },
+            // 第六-七天景点
+            {
+                title: "Day 6-7: 巴音布鲁克 → 独库公路 → 乌鲁木齐",
+                color: "#00cccc",
+                points: [
+                    { name: "巴音布鲁克", lng: 84.150023, lat: 43.03155 },
+                    { name: "独库公路中点", lng: 86.0, lat: 43.3 },
+                    { name: "乌鲁木齐", lng: 87.617733, lat: 43.792818 }
+                ]
+            }
+        ];
+
+        // 景点详细介绍
+        const spotDetails = {
+            "乌鲁木齐": "新疆维吾尔自治区首府，是一座现代化的大都市，也是此次行程的起点和终点。",
+            "果子沟大桥": "世界上最高的斜拉桥之一，是伊犁地区的交通枢纽和著名景点，桥下的峡谷风光十分壮丽。",
+            "赛里木湖": "新疆最大的高山湖泊，被誉为'大西洋最后一滴眼泪'。湖水清澈湛蓝，周围是连绵的雪山和草原。",
+            "霍尔果斯口岸": "中哈边境重要的口岸，也是著名的旅游观光胜地，可以感受到浓厚的异域风情。",
+            "霍城薰衣草": "中国最大的薰衣草种植基地，每年5-7月是最佳观赏季节，紫色花海美不胜收。",
+            "伊宁": "伊犁哈萨克自治州首府，有着悠久的历史和独特的文化风情，可品尝到正宗的新疆美食。",
+            "喀拉峻草原": "有'西部第一草原'之称，以广阔的草场和迷人的湖泊著称，是休闲游玩的理想之地。",
+            "特克斯": "全球最大的八卦城，按照易经八卦图形规划建设的城市，独特的城市布局令人叹为观止。",
+            "夏塔古道": "古丝绸之路上的重要驿道，风景优美，有着丰富的历史文化，适合徒步爱好者。",
+            "库尔德宁": "天山北麓原始森林自然保护区，以云杉为主的原始森林景观，空气清新，环境幽静。",
+            "那拉提草原": "空中草原，是世界四大草原之一，景色壮丽，适合骑马、徒步等活动，可以体验哈萨克族的风俗文化。",
+            "巴音布鲁克": "中国第二大草原，以'九曲十八弯'和天鹅湖闻名，是观赏野生天鹅的绝佳地点。",
+            "独库公路中点": "新疆最美公路之一，途经天山山脉，沿途风景壮丽多变，有'新疆66号公路'之称，是自驾爱好者的天堂。"
+        };
+
+        // 初始化地图
+        window.onload = function() {
+            // 创建地图实例
+            const map = new AMap.Map('map', {
+                zoom: 7,
+                center: [84, 43.5],
+                viewMode: '3D'
+            });
+            
+            // 添加地图控件
+            map.plugin(['AMap.ToolBar', 'AMap.Scale'], function() {
+                const toolBar = new AMap.ToolBar({
+                    position: {
+                        top: '50%',
+                        right: '20px',
+                        transform: 'translateY(-50%)'
+                    }
+                });
+                const scale = new AMap.Scale({
+                    position: {
+                        bottom: '20px',
+                        left: '20px'
+                    }
+                });
+                map.addControl(toolBar);
+                map.addControl(scale);
+            });
+            
+            // 创建一个点集合，用于存储所有点标记
+            const markers = [];
+            
+            // 遍历每天的行程，添加标记和路线
+            pointsList.forEach((day, dayIndex) => {
+                // 为每个点添加标记
+                day.points.forEach((point, pointIndex) => {
+                    const markerContent = document.createElement('div');
+                    markerContent.className = 'marker-container';
+                    
+                    // 创建数字标记
+                    const numberDiv = document.createElement('div');
+                    numberDiv.style.cssText = `
+                        background-color: ${day.color};
+                        color: white;
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        border: 2px solid white;
+                        margin-bottom: 2px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                    `;
+                    numberDiv.textContent = (pointIndex + 1);
+                    
+                    // 创建地点名称标签
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'marker-label';
+                    labelDiv.textContent = point.name;
+                    
+                    markerContent.appendChild(numberDiv);
+                    markerContent.appendChild(labelDiv);
+                    
+                    const marker = new AMap.Marker({
+                        position: [point.lng, point.lat],
+                        content: markerContent,
+                        title: point.name,
+                        map: map
+                    });
+                    
+                    // 添加信息窗体
+                    const infoWindow = new AMap.InfoWindow({
+                        content: `
+                            <div style="padding:15px; max-width:300px;">
+                                <h3 style="margin-bottom:10px; color:#1e90ff;">${point.name}</h3>
+                                <p style="margin-bottom:8px;"><strong>行程：</strong>${day.title}</p>
+                                <p>${spotDetails[point.name] || '美丽的新疆景点'}</p>
+                            </div>
+                        `,
+                        offset: new AMap.Pixel(0, -30)
+                    });
+                    
+                    marker.on('click', () => {
+                        infoWindow.open(map, marker.getPosition());
+                    });
+                    
+                    markers.push(marker);
+                });
+                
+                // 添加路线
+                const path = day.points.map(point => [point.lng, point.lat]);
+                const polyline = new AMap.Polyline({
+                    path: path,
+                    strokeColor: day.color,
+                    strokeWeight: 6,
+                    strokeOpacity: 0.8,
+                    zIndex: 50
+                });
+                
+                polyline.setMap(map);
+            });
+            
+            // 自动调整地图视野
+            map.setFitView(markers);
+            
+            // 生成二维码
+            new QRCode(document.getElementById('qrcode'), {
+                text: "amapuri://workInAmap/createWithToken?polymericId=mcp_408975b6156349539d70ae1d91fadf3e&from=MCP",
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    </script>
+</body>
+</html> 
